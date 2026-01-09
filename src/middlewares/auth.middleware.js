@@ -1,12 +1,12 @@
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, _ , next) => {
 
     try {
-        const token = req.cookies?.accessToken || req.headers("Authorization")?.replace("Bearer ", "");
+        const token = req.cookies?.accessToken || req.headers.authorization?.replace("Bearer ", "");
     
         if(!token){
             throw new ApiError(401, "Unauthorized access - token missing");
@@ -18,7 +18,7 @@ export const verifyJWT = asyncHandler(async (req, _ , next) => {
         if(!user){
             throw new ApiError(401 , "Inavalid access token")
         }
-    
+        
         req.user = user;
         next();
     } catch (error) {
