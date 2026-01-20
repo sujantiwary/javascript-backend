@@ -166,7 +166,7 @@ const logOutUser = asyncHandler(async (req, res) => {
     req.user._id,
     {
       $set: {
-        refreshToken: undefined,
+        refreshToken: 1,
       },
     },
     {
@@ -185,8 +185,10 @@ const logOutUser = asyncHandler(async (req, res) => {
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
+  console.log("cookies:", req.cookies);
+ console.log("body:", req.body);
   const incomingRefreshToken =
-    req.cookies.refreshToken || req.body.refreshToken;
+    req.cookies?.refreshToken || req.body?.refreshToken;
   if (!incomingRefreshToken) {
     throw new ApiError(401, "Unauthorized request");
   }
